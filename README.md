@@ -5,11 +5,12 @@ Kaby Lake-R, UHD 620, Realtek ALC257) with an **Intel AX200 or AX210** Wi-Fi car
 targeting **macOS Sequoia 15**. SMBIOS `MacBookPro15,2`, OpenCore 1.0.x.
 Also covers the **stock Intel 8265** card (see [Wireless options](#wireless-options)).
 
-> **Status: experimental.** The sibling Sonoma build from the same baseline boots
-> and installs cleanly on real L480 hardware; this Sequoia track is assembled from
-> it with Sequoia-specific Wi-Fi handling but has **not yet completed a verified
-> install**. Bluetooth is **broken / under investigation**. Details below — please
-> report results (good or bad) as issues.
+> **Status: partially verified on hardware.** The sibling Sonoma build from the same
+> baseline boots and installs cleanly on real L480 hardware; this Sequoia track
+> now has **working native-menu Wi-Fi and working iMessage/FaceTime confirmed on
+> hardware** (via the alpha kext below). Bluetooth is **broken / under investigation**.
+> Sleep, updates, and long-term stability on Sequoia still want mileage — please
+> report results as issues.
 
 ## Hardware covered
 
@@ -52,8 +53,8 @@ it works identically for **AX210, AX200, and the stock Intel 8265**. Differences
 | Internal display accel, HDMI | Expected |
 | Battery %, sleep/wake, keyboard, brightness keys, audio, webcam, Ethernet | Expected (carried over, re-verify on Sequoia) |
 | Wi-Fi via `itlwm.kext` + HeliPort (**default**) | Expected — shows as Ethernet (en0); simplest path to working iMessage/FaceTime |
-| Wi-Fi via native menu (AirportItlwm) | **Experimental** — laobamac v2.4.0-alpha Sequoia build ships present-but-**disabled**; days old, for testing only |
-| **Bluetooth (AX210)** | **BROKEN — under investigation** |
+| Wi-Fi via native menu (AirportItlwm) | **Working on hardware** — laobamac v2.4.0-alpha Sequoia build confirmed: native menu + iMessage/FaceTime OK. Ships present-but-**disabled** (alpha is days old); enable via `Tools\Switch-WiFiMode.ps1` only after a working itlwm setup exists as fallback |
+| **Bluetooth (AX210)** | **BROKEN — under investigation** (confirmed on hardware: Wi-Fi/iServices fine, BT absent) |
 | AirDrop / Apple Watch unlock / Sidecar-over-Wi-Fi | Not available with Intel wireless, by design |
 | Fingerprint reader | No macOS driver exists — permanently unsupported |
 

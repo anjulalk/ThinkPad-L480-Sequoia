@@ -1,0 +1,9 @@
+# Build artifacts, downloads, installers — never commit these
+Downloads-prereqs/
+*.dmg
+*.pkg
+*.zip
+*.bin
+# Local notes / scratch
+*.bak
+config.*.plist

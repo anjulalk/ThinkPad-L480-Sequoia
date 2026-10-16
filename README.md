@@ -3,6 +3,7 @@
 OpenCore EFI for the **Lenovo ThinkPad L480** (i5-8250U / i5-8350U / i7-8550U,
 Kaby Lake-R, UHD 620, Realtek ALC257) with an **Intel AX200 or AX210** Wi-Fi card,
 targeting **macOS Sequoia 15**. SMBIOS `MacBookPro15,2`, OpenCore 1.0.x.
+Also covers the **stock Intel 8265** card (see [Wireless options](#wireless-options)).
 
 > **Status: experimental.** The sibling Sonoma build from the same baseline boots
 > and installs cleanly on real L480 hardware; this Sequoia track is assembled from
@@ -21,6 +22,27 @@ targeting **macOS Sequoia 15**. SMBIOS `MacBookPro15,2`, OpenCore 1.0.x.
 | Ethernet | Intel I219-LM/V | IntelMausi |
 | Keyboard/TrackPad | PS2 + Synaptics RMI | VoodooPS2 + VoodooRMI stack |
 | SSD | SATA/AHCI (e.g. SanDisk X400-class) | Samsung PM981/PM991 NVMe are known Hackintosh-killers — avoid |
+
+## Wireless options
+
+This EFI defaults to `itlwm.kext` + HeliPort (Mode B), which is card-agnostic —
+it works identically for **AX210, AX200, and the stock Intel 8265**. Differences:
+
+| Card | Wi-Fi on Sequoia | Bluetooth | Notes |
+|---|---|---|---|
+| AX210 (this repo's config) | itlwm+HeliPort ✅ (default) | ❌ Broken, under investigation (Gen3 firmware) | Native-menu path = experimental alpha, disabled |
+| AX200 | itlwm+HeliPort ✅ expected | Likely working (mature Gen2 BT 5.0 firmware) — untested, please report | Same kexts, no config change |
+| Stock 8265 | itlwm+HeliPort ✅ expected | Likely working (mature Gen2 BT 4.2 firmware) — untested, please report | Same kexts, no config change |
+
+- **No AirportItlwm native-menu path exists on Sequoia for ANY Intel card** in a
+  stable release — that's an Intel-wireless-on-Sequoia limitation, not this EFI.
+  (The disabled alpha entry is AX210-tested; 8265/AX200 behavior with it is unknown.)
+- The cosmetic `model` string under `DeviceProperties → PciRoot(0x0)/Pci(0x1D,0x2)/Pci(0x0,0x0)`
+  says "Intel Wi-Fi 6E AX210" — 8265/AX200 users can rename it to match their card
+  (Hackintool → PCIe will show the real hardware regardless; purely cosmetic).
+- Bluetooth rides the same HS07 USB lane on all three cards — no USB map change needed.
+- `IntelBTPatcher.kext` stays loaded for all cards: it only activates on Gen3
+  firmware devices and is inert otherwise.
 
 ## What works / what doesn't (Sequoia track, honest edition)
 
